@@ -1,4 +1,10 @@
-# try-vue
+##nothing but practice...I would say
+just trying to invent some wheels by myself before check out how those UI lib were doing it.
+
+thought I'd better have a todo list:
+* pagination
+* navigates
+* ......
 
 ## Project setup
 ```
