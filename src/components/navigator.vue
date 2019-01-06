@@ -1,7 +1,7 @@
 <template>
   <ul class="navi">
     <li v-for="item in this.navigates"
-      :key="item"
+      :key="item.url"
       @hover="toggle(item.title, $event)"
       class="navi"
     >
