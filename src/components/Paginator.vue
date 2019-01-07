@@ -38,7 +38,7 @@
         </select>
       </div>
       <div class="form-item">
-        <!-- react.js里也是这样, 不能在子组件里直接改prop, 不能把prop里的值无条件copy到组件的state(vue.js里叫data) -->
+        <!-- react.js里也是这样, 不能在子组件里直接改prop, 不建议把prop里的值无条件copy到组件的state(vue.js里叫data, 但是无所谓?) -->
         <span>总条数(测试用)</span>
         <input type="number" v-model="totals">
       </div>

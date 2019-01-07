@@ -2,26 +2,10 @@
   <ul class="navi">
     <li v-for="item in this.navigates"
       :key="item.url"
-      @hover="toggle(item.title, $event)"
       class="navi"
     >
-      <a @hover="expand(item.title, $event)"
-      :href="item.url">{{item.title}}</a>
-      <!-- 哎, 乱成一团...
-           就是想太复杂了, 也说明CSS基础太差...
-           人家两句就解决了
-           li#navi:hover ul.navi-dropdown {display: block}
-           ul.navi-dropdown {display:none..blah..blah..}
-           多么优雅
-           滚回去学CSS吧你 -->
-      <!-- 等等, 再考虑下, 这样不就会出现hover的话子列表就全展开了吗 -->
-      <!-- 并不会, li:hover > ul.loopList {display: block}, 注意大于号, 限定为直系子元素就行了 -->
-
-      <!--我需要这种：navigator:hover >> sliDown(ul / div) >> items(li > a/ul) -->
-      <!-- update: 不需要了, 沙雕 -->
-
-      <!-- 下面这个list做成组件的话需要能循环自己 -->
-      <!-- <ul :class="this.hovering === item.title?'navi':'hide'"> -->
+      <a :href="item.url">{{item.title}}</a>
+      
       <ul class="sliDown">
         <li v-for="label in item.derivatives"
           :key="label"
@@ -29,6 +13,7 @@
           {{label}}
         </li>
       </ul>
+
     </li>
   </ul>
 </template>
@@ -53,13 +38,6 @@ export default {
     }
   },
   methods: {
-    toggle (){
-      
-    },
-    expand (hovering){
-      // e.target.classList.toggle("folded")
-      this.hovering = hovering
-    }
 
   }
 }
@@ -96,18 +74,19 @@ export default {
   
   ul.sliDown {
     display: none;
-    /* and more */
-  }
-  /* 好好学 */
-  li.navi:hover ul.sliDown {
-    display: block;
     position: absolute;
     padding: 10px 0;
     border: 1px solid #ddd;
     background-color: #fff;
     border-radius: 5px;
     list-style-type: none;
-    text-align: start
+    text-align: start;
+    
+    /* and more */
+  }
+  /* 好好学 */
+  li.navi:hover ul.sliDown {
+    display: block;
   }
 
   a {
