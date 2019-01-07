@@ -14,18 +14,18 @@
            ul.navi-dropdown {display:none..blah..blah..}
            多么优雅
            滚回去学CSS吧你 -->
+      <!-- 等等, 再考虑下, 这样不就会出现hover的话子列表就全展开了吗 -->
+      <!-- 并不会, li:hover > ul.loopList {display: block}, 注意大于号, 限定为直系子元素就行了 -->
 
       <!--我需要这种：navigator:hover >> sliDown(ul / div) >> items(li > a/ul) -->
       <!-- update: 不需要了, 沙雕 -->
-      <!-- 等等, 再考虑下, 这样不就会出现hover的话子列表就全展开了吗 -->
 
       <!-- 下面这个list做成组件的话需要能循环自己 -->
       <!-- <ul :class="this.hovering === item.title?'navi':'hide'"> -->
       <ul class="sliDown">
         <li v-for="label in item.derivatives"
           :key="label"
-          class="slideDownNavi"
-        >
+        > <!-- class="slideDownNavi" -->
           {{label}}
         </li>
       </ul>
@@ -71,15 +71,16 @@ export default {
     display: flex;
     justify-content: start;
     padding: 0;
+    margin: 0;
     background-color: #0eaedf
   }
 
   li > a::after{
-    content: " v"
+    content: " >"
   }
 
-  li > a.expanded::after{
-    content: "^"
+  li.navi:hover > a::after{
+    content: " v"
   }
 
   li.navi {
@@ -99,7 +100,14 @@ export default {
   }
   /* 好好学 */
   li.navi:hover ul.sliDown {
-    display: block
+    display: block;
+    position: absolute;
+    padding: 10px 0;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 5px;
+    list-style-type: none;
+    text-align: start
   }
 
   a {
