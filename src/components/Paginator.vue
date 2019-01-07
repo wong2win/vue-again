@@ -1,53 +1,65 @@
 <template>
   <div>
-    <div class="pageUtils">
-      <div class="form-item">
-        <span>每页条数</span>
-        <select v-model="itemsPerPage" id="ipp">
-          <option value="10">10</option>
-          <option value="15">15</option>
-          <option value="20">20</option>
-        </select>
-      </div>
-      <div class="form-item">
-        <span>总条数(测试用)</span>
-        <input type="number" v-model="totals">
-      </div>
-    </div>
-
+    <!-- 分页 -->
     <div class="pages">
       <!-- 或者一个个:disable... -->
-      <div v-if="current !== 1">
+      <div v-if="current !== 1" class="clickable">
         <span @click="first">首页</span>
         <span @click="last">上一页</span>
       </div>
+      <div v-else>
+        <span>已是首页</span>
+      </div>
       <!-- iterator -->
-      <div>
+      <div class="clickable">
         <span v-for="pageNum in totalPages"
           :key="pageNum"
           :class="current == pageNum?'current':''"
           @click="current = pageNum"
         >{{pageNum}}</span>
       </div>
-      <div v-if="current !== totalPages">
+      <div v-if="current !== totalPages" class="clickable">
         <span @click="next">下一页</span>
         <span @click="atLast">末页</span>
       </div>
+      <div v-else>
+        <span>已是末页</span>
+      </div>
+    </div>
+    <!-- 设置 -->
+    <div class="pageUtils">
+      <div class="form-item">
+        <span>每页条数</span>
+        <select v-model="itemsPerPage" id="ipp">
+          <option value="1">1(测试用)</option>
+          <option value="10">10</option>
+          <option value="15">15</option>
+          <option value="20">20</option>
+        </select>
+      </div>
+      <div class="form-item">
+        <!-- react.js里也是这样, 不能在子组件里直接改prop, 不能把prop里的值无条件copy到组件的state(vue.js里叫data) -->
+        <span>总条数(测试用)</span>
+        <input type="number" v-model="totals">
+      </div>
     </div>
   </div>
+
+  
 </template>
 
 <script>
 export default {
   props:{
-    // 页数...其实不该这么传进来, 传个totals差不多
-    pages: Number
+    totals: {
+      type: Number,
+      default: 1
+    }
   },
   data(){
     return {
       itemsPerPage: 10,
       current: 1,
-      totals: 80
     }
   },
   methods:{
@@ -69,12 +81,15 @@ export default {
     },
     next (){
       this.current ++
+      this.$emit('update:page', this.$data)
     },
     last (){
       this.current --
+      this.$emit('update:page', this.$data)
     },
     first (){
       this.current = 1
+      this.$emit('update:page', this.$data)
     }
   },
   computed:{
@@ -82,7 +97,7 @@ export default {
       if(this.totals === 0 || this.itemsPerPage === 0)
         return 1
       else if(this.totals > 0)
-        return Math.ceil(this.totals/this.itemsPerPage)
+        return Math.ceil(this.totals / this.itemsPerPage)
       else
         return 1
     }
@@ -95,16 +110,18 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   div > span {
     display: inline-block;
     padding: 0 1em;
+    user-select: none;
   }
 
-  div.pages span:hover {
-    background-color: rgba(0, 183, 255, 0.945)
+  div.clickable > span:hover {
+    background-color: rgba(0, 183, 255, 0.945);
+    color: white
   }
-  .pages {
+  .pages, .pageUtils {
     display: flex;
     justify-content: center
   }
