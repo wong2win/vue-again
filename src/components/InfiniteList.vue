@@ -1,33 +1,34 @@
 <template>
-  <ul>
-    <li v-for="item in list4Test"
-      :key="item"
+  <ul class="loopList">
+    <li v-for="item in list"
+      :key="item[urlLabel]"
     >
+      <!-- common <a>, if has label, url -->
+      <a :href="item[urlLabel]?item[urlLabel]:'#'">
+        {{item[textLabel]?item[textLabel]:'木本文'}}  
+      </a>
       <!-- loop itself, if has sublist prop...有点丑 -->
       <infinite-list
-        v-if="this.expandable(item[sublistLabel])"
-        :textLabel="item[textLabel]"
-        :urlLabel="item[urlLabel]"
-        :sublistLabel="item[sublistLabel]"
-        :list="item[sublistLabel]"
-        :class="{current: isCurrent}">
+        v-if="expandable(item[sublistLabel])"
+        :textLabel="textLabel"
+        :urlLabel="urlLabel"
+        :sublistLabel="sublistLabel"
+        :list="item[sublistLabel]">
+        <!-- :class="{current: isCurrent}"> -->
       </infinite-list>
-      <!-- common <a>, if has label, url, but no sublist -->
-      <a v-else 
-        :href="item[url]?item[url]:'#'">
-        {{item[textLabel]}}  
-      </a>
     </li>
   </ul>
 </template>
 
 <script>
-import InfiniteList from './InfiniteList.vue'
-
+import loading from './loading'
 // so that's what I thought it should looks like
 export default {
   components:{
-    InfiniteList
+    'InfiniteList':() => ({
+      component: import('./InfiniteList.vue'),
+      loading: loading
+    })
   },
   props:{
     list: Array,
@@ -35,42 +36,46 @@ export default {
     urlLabel: String,
     sublistLabel: String
   },
-
-  data(){
-    return {
-      // list4Test:[{
-      //   url: 'https://reactjs.org', 
-      //   title: 'React', 
-      //   sublist: [{
-      //       title: 'redux',
-      //       url: "https://redux.js.org"
-      //     }, {
-      //       title: 'react router',
-      //       url: "https://reacttraining.com/react-router"
-      //     }]
-      //   }, {
-      //   url: 'https://vuejs.org',
-      //   title: 'Vue',
-      //   sublist: [{
-      //       title: 'vuex',
-      //       url: "https://vuex.vuejs.org"
-      //     }, {
-      //       title: "vue-router",
-      //       url: "https://router.vuejs.org"
-      //     }]
-      //   }, {
-      //   title: "no sublist, nor url"
-      // }]
-    }
-  },
   methods:{
     expandable(list) {
-      return Array.isArray(list) && list.length > 0 // && list[0].hasProperty() is this unnecessary?
+      return list && Array.isArray(list) && list.length > 0 // && list[0].hasProperty() is this unnecessary?
     }
   }
 }
 </script>
 
 <style>
-  
+  ul.loopList {
+    /* display: none;
+    position: absolute;
+    list-style-type: none;
+    background-color: #fff;
+    border: 1px solid #ddd; */
+    display: none;
+    position: absolute;
+    padding: 10px 0;
+    border: 1px solid #ddd;
+    background-color: #fff;
+    border-radius: 5px;
+    list-style-type: none;
+    text-align: start;
+    
+    /* and more */
+  }
+
+  ul.loopList li {
+    padding: 0.3em 1em
+  }
+  ul.loopList li:hover {
+    background-color: rgb(231, 231, 231)
+  }
+
+  li:hover > ul.loopList{
+    display: block
+  }
+
+  a {
+    text-decoration: none;
+    color: #000000;
+  }
 </style>
