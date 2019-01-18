@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="pagination">
     <!-- 分页 -->
     <div class="pages">
       <!-- 或者一个个:disable... -->
@@ -53,12 +53,12 @@ export default {
   props:{
     totals: {
       type: Number,
-      default: 1
+      default: 2
     }
   },
   data(){
     return {
-      itemsPerPage: 10,
+      itemsPerPage: 1,
       current: 1,
     }
   },
@@ -73,7 +73,8 @@ export default {
      * TODOS:  
      * 其实还有好多要做的...  
      * 比如鼠标hover在span上的样式可以显示成☝️,   
-     * 以及点太快会选中span...这个行为应该是span默认的...需要改掉
+     * 以及点太快会选中span文本...这个行为应该是span默认的...需要改掉----done  
+     * 页数太多则只显示一部分
      */
     atLast (){
       this.current = this.totalPages
@@ -111,10 +112,15 @@ export default {
 </script>
 
 <style scoped>
+  div.pagination {
+    margin-top: 3rem
+  }
+
   div > span {
     display: inline-block;
     padding: 0 1em;
     user-select: none;
+    border-radius: 3px ;
   }
 
   div.clickable > span:hover {

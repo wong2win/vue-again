@@ -53,6 +53,7 @@ export default {
     border: 1px solid #ddd; */
     display: none;
     position: absolute;
+    width: 10rem;
     padding: 10px 0;
     border: 1px solid #ddd;
     background-color: #fff;
