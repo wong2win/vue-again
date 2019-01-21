@@ -6,34 +6,88 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+  <style>
+    img {
+      width: 1.5rem
+    }
+    .dialog {
+      width: 65vw;
+      max-height: 40vh;
+      padding: 0 1rem 1rem 1rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+      overflow:auto;
+      border: 0.1rem solid #aaa
+    }
+    .dialog > .message > * {
+      display: inline-block;
+    }
+    .dialog > .message.mine {
+      align-self: flex-end
+    }
+    .message > div > span {
+      display: block;
+    }
+    .message > div > p {
+      display: block;
+      margin: 0;
+      padding: 0.2rem 0.5rem;
+      border-radius: 0.2rem;
+      background-color: lightblue
+    }
+    .inputField {
+      margin-top: 2rem;
+    }
+    .inputField > button {
+      border-radius: 0.2rem
+    }
+
+  </style>
   </head>
 <body>
   <div class="dialog">
     <!-- append p here -->
     <div class="message mine">
-      <img src="" alt="name">
+      <img src="../assets/logo.png" alt="name">
       <div>
         <span>name</span>
         <p>message</p>
       </div>
     </div>
+    <div class="message">
+        <img src="../assets/logo.png" alt="name">
+        <div>
+          <span>name</span>
+          <p>message</p>
+        </div>
+      </div>
   </div>
-  <div>
+  <div class="inputField">
     <input type="text" id="impu">
     <button>send</button>
   </div>
   <script>
-    $(body).load(function(){
+    $().ready(function(){
       
       $("button").click(function (){
         var message = $("#impu").val()
-        $.ajax({
-          url: "https://yesno.wtf",
-          method: "POST",
-          success: "",
-          error: "",
-          
-        })
+        // 消息带问号才发送
+        if (/\?$/.test(message)){
+          sent('../assets/logo.png', 'me', message)
+          $.ajax({
+            url: "https://yesno.wtf/api",
+            method: "GET",
+            // data: {www:message},
+            dataType: "json",
+            success (data){
+              received(data.image, 'received', data.answer)
+            },
+          })
+        }
+        // 不然只有默认提示
+        else
+          received('../assets/logo.png', 'tips', 'ask me anything, but end with a "?" plz')
         
       })
 
@@ -45,6 +99,7 @@
                                 <p>${message}</p>
                               </div>
                             </div>`)
+        $("#impu").val("")
       }
 
       function received (avatarURL, name, message){
@@ -55,6 +110,10 @@
                                 <p>${message}</p>
                               </div>
                             </div>`)
+        document.querySelector(".dialog").scroll({
+          top: 100,
+          behavior: 'smooth'
+        })
       }
     })
   </script>
