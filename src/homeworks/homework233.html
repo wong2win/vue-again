@@ -22,6 +22,7 @@
     }
     .dialog > .message > * {
       display: inline-block;
+      vertical-align: text-top
     }
     .dialog > .message.mine {
       align-self: flex-end
@@ -49,17 +50,16 @@
   <div class="dialog">
     <!-- append p here -->
     <div class="message mine">
-      <img src="../assets/logo.png" alt="name">
       <div>
-        <span>name</span>
-        <p>message</p>
+        <p>let's move</p>
       </div>
+      <img src="../assets/logo.png" alt="name">
     </div>
     <div class="message">
         <img src="../assets/logo.png" alt="name">
         <div>
-          <span>name</span>
-          <p>message</p>
+          <span>example</span>
+          <p>hi yo silver!</p>
         </div>
       </div>
   </div>
@@ -93,11 +93,10 @@
 
       function sent (avatarURL, name, message){
         $(".dialog").append(`<div class="message mine">
-                              <img src="${avatarURL}" alt="${name}">
                               <div>
-                                <span>${name}</span>
                                 <p>${message}</p>
                               </div>
+                              <img src="${avatarURL}" alt="${name}">
                             </div>`)
         $("#impu").val("")
       }
@@ -110,10 +109,10 @@
                                 <p>${message}</p>
                               </div>
                             </div>`)
-        document.querySelector(".dialog").scroll({
-          top: 100,
-          behavior: 'smooth'
-        })
+        // document.querySelector(".dialog").scroll({
+        //   top: 100,
+        //   behavior: 'smooth'
+        // })
       }
     })
   </script>
