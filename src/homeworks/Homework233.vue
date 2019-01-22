@@ -1,23 +1,9 @@
 <template>
   <div class="wrapper">
     <div class="dialog">
-      <div v-for="msg in messages"
-        :key="msg.text">
-        <!-- 自己发的示例 -->
-        <div v-once class="message mine">
-          <div>
-            <p>let's move</p>
-          </div>
-          <img src="../assets/logo.png" alt="name">
-        </div>
-        <!-- 接收到的示例 -->
-        <div v-once class="message">
-          <img src="../assets/logo.png" alt="name">
-          <div>
-            <span>example</span>
-            <p>hi yo silver!</p>
-          </div>
-        </div>
+      <div v-for="(msg, index) in this.messages"
+        :key="index"
+        :class="msg.me?'mine':''">
         <!-- 自己发的 -->
         <div v-if="msg.me" class="message mine">
           <div>
@@ -27,7 +13,7 @@
         </div>
         <!-- 接收到的 -->
         <div v-else class="message">
-          <img :src="msg.avatar" :alt="msg.author">
+          <img :src="msg.avatar" ><!-- :alt="msg.author" -->
           <div>
             <span>{{msg.author}}</span>
             <p>{{msg.text}}</p>
@@ -45,6 +31,8 @@
 </template>
 
 <script>
+import Mock from 'mockjs'
+import axios from 'axios'
 export default {
   data (){
     return {
@@ -57,25 +45,43 @@ export default {
   },
   methods: {
     send (){
-      axios.get('https://yesno.wtf/api',{
-        params: {
-          force: 'yes'
-        }
-      }).then(res => {
-        
-        received(res.data.image, 'received', res.data.answer)
+      axios.get('/api/getComment')
+      // ,{
+      //   params: {
+      //     force: 'yes'
+      //   }
+      // }
+      .then(res => {
+        if(res.status == 200)
+          this.messages.push({
+            me: true,
+            text: this.impu
+          },{
+            me: false,// res.data.me,
+            avatar: res.data.avatar,
+            author: res.data.author,
+            text: res.data.text
+          })
       }).catch(err => {
         console.log(err)
         // todo: add class for the element with class = msgID
       })
     }
+  },
+  created (){
+    Mock.mock('/api/getComment', {
+      'me|0-1': false,
+      'avatar': '@url',
+      'author': '@cname',
+      'text': '@cparagraph'
+    })
   }
 }
 </script>
 
-<style>
+<style scoped>
   img {
-    width: 1.5rem
+    width: 3rem
   }
   .dialog {
     width: 65vw;
@@ -87,13 +93,16 @@ export default {
     overflow:auto;
     border: 0.1rem solid #aaa
   }
-  .dialog > .message > * {
+  .dialog > .mine {
+    align-self: flex-end
+  }
+  .dialog .message > * {
     display: inline-block;
     vertical-align: text-top
   }
-  .dialog > .message.mine {
+  /* .dialog > .message.mine {
     align-self: flex-end
-  }
+  } */
   .message > div > span {
     display: block;
   }
@@ -107,7 +116,7 @@ export default {
   .inputField {
     margin-top: 2rem;
   }
-  .inputField > input,span::after{
+  .inputField > input::after,span::after{
     content: "";
     display: block;
   }
