@@ -6,6 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
   <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-1.9.0.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <style>
     img {
       width: 1.5rem
@@ -40,10 +41,16 @@
     .inputField {
       margin-top: 2rem;
     }
+    .inputField > input,span::after{
+      content: "";
+      display: block;
+    }
     .inputField > button {
       border-radius: 0.2rem
     }
 
+    /* todo: add style for .failed */
+    
   </style>
   </head>
 <body>
@@ -65,25 +72,46 @@
   </div>
   <div class="inputField">
     <input type="text" id="impu">
-    <button>send</button>
+    <button class="JQuery">send</button>
+    <span> with JQuery $.ajax()</span>
+    <button class="axios">send</button>
+    <span> with axios.js and data received from mock.js</span>
   </div>
   <script>
     $().ready(function(){
-      
-      $("button").click(function (){
+      // todo: add eventhandler for element(".failed")
+      $("button").click(function (e){
         var message = $("#impu").val()
         // 消息带问号才发送
         if (/\?$/.test(message)){
-          sent('../assets/logo.png', 'me', message)
-          $.ajax({
-            url: "https://yesno.wtf/api",
-            method: "GET",
-            // data: {www:message},
-            dataType: "json",
-            success (data){
-              received(data.image, 'received', data.answer)
-            },
-          })
+          var msgID = sent('../assets/logo.png', 'me', message)
+          // send with $.ajax() if it's .JQuery button
+          if(e.target.classList.contains('JQuery'))
+            $.ajax({
+              url: "https://yesno.wtf/api",
+              method: "GET",
+              data: {force: 'no'},
+              dataType: "json",
+              success (data){
+                received(data.image, 'received', data.answer)
+              },
+              error (){
+                // todo: add class for the element with class = msgID
+              }
+            })
+          // send with axios if it's .axios button
+          else if(e.target.classList.contains('axios'))
+            axios.get('https://yesno.wtf/api',{
+              params: {
+                force: 'yes'
+              }
+            }).then(res => {
+              received(res.data.image, 'received', res.data.answer)
+            }).catch(err => {
+              console.log(err)
+              // todo: add class for the element with class = msgID
+            })
+          else console.error("wtf")
         }
         // 不然只有默认提示
         else

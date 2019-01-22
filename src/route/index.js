@@ -14,6 +14,10 @@ export default new VueRouter({
     {
       path: '/store',
       component: () =>  import('@/homeworks/Test4Slot')
+    },
+    {
+      path: '/hw233',
+      component: () => import('@/homeworks/Homework233')
     }
   ]
 })
