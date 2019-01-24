@@ -6,6 +6,7 @@ thought I'd better have a todo list:
 * navigates (
 * tabs
 * tags (
+* infinite list
 * ......
 
 ## Project setup
