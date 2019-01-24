@@ -30,7 +30,7 @@
         </button>
       </td>
       <td>
-        <button @click.prevent="remove(phone.id)">移除</button>
+        <button @click.prevent="remove(phone)">移除</button>
       </td>
     </tr>
     <tr><td colspan="5">已选中: {{totals}}</td></tr>
@@ -79,8 +79,10 @@ export default {
     plus1 (phone){
       phone.count ++
     },
-    remove (id){
-      this.phoneList.splice(this.phoneList.indexOf(id), 1)
+    remove (phone){
+      let index = this.phoneList.indexOf(phone)
+      if(! (index < 0))
+        this.phoneList.splice(index, 1)
     }
   },
   computed: {
@@ -115,7 +117,12 @@ export default {
     background-color: rgb(69, 166, 252)
   }
   tr > *{
-    padding: 0.3em 1em
+    padding: 0.3em 1em;
+  }
+  @media screen and (max-width: 502px) {
+    table {
+      font-size: 0.5rem
+    }
   }
 </style>
 

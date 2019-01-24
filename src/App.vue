@@ -1,10 +1,14 @@
 <template>
   <div id="app">
-    <navigator ></navigator>
-
-    <router-view></router-view>
-
-    <!-- <HelloWorld :msg="this.msg"/> -->
+    <div class="top-navi">
+      <navigator ></navigator>
+    </div>
+    <div class="main content">
+      <div class="subnavi">
+        <!-- a ul list here, if any -->
+      </div>
+      <router-view></router-view>
+    </div>
   </div>
 </template>
 
@@ -33,5 +37,14 @@ export default {
   text-align: center;
   color: #2c3e50;
   /* margin-top: 60px; */
+}
+
+div.top-navi {
+  width: 100vw;
+  position: fixed;
+  top: 0;
+}
+div.main.content {
+  margin-top: 2.2rem
 }
 </style>

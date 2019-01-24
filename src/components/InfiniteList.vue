@@ -46,13 +46,9 @@ export default {
 
 <style>
   ul.loopList {
-    /* display: none;
-    position: absolute;
-    list-style-type: none;
-    background-color: #fff;
-    border: 1px solid #ddd; */
     display: none;
     position: absolute;
+    top: 2.2rem;
     width: 10rem;
     padding: 10px 0;
     border: 1px solid #ddd;

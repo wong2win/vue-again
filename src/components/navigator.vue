@@ -1,33 +1,34 @@
 <template>
-  <ul class="navi">
-    <!-- <li v-for="item in this.navigates"
-      :key="item.url"
-      class="navi"
-    >
-      <a :href="item.url">{{item.title}}</a>
-      <ul class="sliDown">
-        <li v-for="label in item.derivatives"
-          :key="label"
-        >
-          {{label}}
+  <div>
+    <!-- <div class="mobile navi">
+      <ul class="left-navi">
+        <li v-for="item in this.list4Test"
+        :key="item.url">
+          <a :href="item.url">{{item.title}}</a>
+          <infinite-list :list="item.sublist"
+            :textLabel="'title'"
+            :urlLabel="'url'"
+            :sublistLabel="'sublist'"
+          >
+          </infinite-list>
         </li>
       </ul>
-
-    </li> -->
-    <!-- test 4 loopList -->
-    <li v-for="item in this.list4Test"
-      :key="item.url"
-      class="navi"
-    >
-      <a :href="item.url">{{item.title}}</a>
-      <infinite-list :list="item.sublist"
-        :textLabel="'title'"
-        :urlLabel="'url'"
-        :sublistLabel="'sublist'"
+    </div> -->
+    <ul class="navi">
+      <li v-for="item in this.list4Test"
+        :key="item.url"
+        class="navi"
       >
-      </infinite-list>
-    </li>
-  </ul>
+        <a :href="item.url">{{item.title}}</a>
+        <infinite-list :list="item.sublist"
+          :textLabel="'title'"
+          :urlLabel="'url'"
+          :sublistLabel="'sublist'"
+        >
+        </infinite-list>
+      </li>
+    </ul>
+  </div>
 </template>
 
 <script>
@@ -39,19 +40,6 @@ export default {
   },
   data (){
     return{
-      // navigates: [
-      //   {
-      //     url: 'https://reactjs.org', 
-      //     title: 'React', 
-      //     derivatives: ['redux', 'React Native', 'create-react-app', 'antd']
-      //   },
-      //   {
-      //     url: 'https://vuejs.org',
-      //     title: 'Vue',
-      //     derivatives: ['vuex', 'vue-router', 'element-UI']
-      //   }
-      // ],
-
       list4Test:[{
         url: 'https://reactjs.org', 
         title: 'React', 
@@ -76,13 +64,23 @@ export default {
             url: "https://router.vuejs.org"
           }]
         }, {
-        title: "no sublist, nor url"
+        title: "no sublist, nor url",
+        sublist: [{
+          title: '购物车',
+          url: '/cart'
+        },{
+          title: '标签组',
+          url: '/store'
+        },{
+          title: '对话框',
+          url: '/hw233'
+        },{
+          title: 's',
+          url: '/#'
+        }]
       }]
     }
   },
-  methods: {
-
-  }
 }
 </script>
 
@@ -94,7 +92,15 @@ export default {
     background-color: #0eaedf;
     text-align: start
   }
-
+  /* div.mobile.navi {
+    display: none
+  }
+  ul.left-navi {
+    display: none;
+    list-style-type: none;
+    padding: 0;
+    text-align: center
+  } */
   li > a::after{
     content: " >"
   }
@@ -113,21 +119,16 @@ export default {
   li.navi:hover {
     background-color: #82dcf8
   }
-  
-  /* ul.sliDown {
-    display: none;
-    position: absolute;
-    padding: 10px 0;
-    border: 1px solid #ddd;
-    background-color: #fff;
-    border-radius: 5px;
-    list-style-type: none;
-    text-align: start;
+/* 
+  div.mobile.navi {
+    display: none
   }
-  ul.sliDown > li {
-    padding: 0.3em 1em
-  }
-  li.navi:hover ul.sliDown {
-    display: block;
+  @media screen and (max-width: 329px){
+    div.mobile.navi {
+      display: block
+    }
+    ul.navi {
+      display: none
+    }
   } */
 </style>
